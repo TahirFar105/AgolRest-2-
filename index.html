@@ -218,11 +218,29 @@
       }
     }; 
 
+    const myAirportsLabelClass = {
+      symbol: {
+      type: "text",
+      color: "black",
+      haloColor: "white",
+      haloSize: "2px",
+      font: {
+      size: "12px",
+      family: "sans-serif"
+    }
+     },
+    labelPlacement: "above-center",
+    labelExpressionInfo: {
+      expression: "$feature.AirportCode" // Use the AirportCode field for the label
+    }
+};
+
       // Adding the const for the feature layer
       const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/My_Airports_/FeatureServer",
         outFields: ["AirportCode"],
-        renderer: myairportRenderer // Apply the renderer to the layer
+        renderer: myairportRenderer,
+        labelingInfo: [myAirportsLabelClass] // Apply the renderer to the layer
       });
 
 
