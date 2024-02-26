@@ -12,17 +12,15 @@
 
   <!-- Adding the modules, API key, and map constant needed for a full screen map app -->
   <script>
-  
     require([
-     "esri/config",
+      "esri/config",
       "esri/Map",
       "esri/views/MapView",
       "esri/Graphic",  
       "esri/layers/GraphicsLayer",
-      //adding in the module for the feature layers
       "esri/layers/FeatureLayer",
-      "esri/widgets/Editor"
-    ], function (esriConfig,Map, MapView,Graphic, GraphicsLayer, FeatureLayer, Editor) {
+      "esri/widgets/Editor" // Add this line
+    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) { // Add Editor here
 
       esriConfig.apiKey = "AAPK1c87127d5a0145b2ac638d800774df300U2ATjjIzTdh-RZndDHdofO0OQ7kIq6PdxclVHH3ODEcby6JAS-PSh-PJsIKazL8";
       const map = new Map({
@@ -30,33 +28,11 @@
       });
 
       const view = new MapView({
-          map: map,
-          center: [-97.7431, 30.2672], // Longitude, latitude
-          zoom: 13, // Zoom level
-          container: "viewDiv" // Div element
-        });
-
-      const myAirports = new FeatureLayer({
-        url:"https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/My_Airports_/FeatureServer",
-        outFields: ["AirportCode"],
+        map: map,
+        center: [-97.7431, 30.2672], // Longitude, latitude
+        zoom: 13, // Zoom level
+        container: "viewDiv" // Div element
       });
-
-      map.add(myAirports);
-    });
-
-        // Set the point layer's LayerInfo
-        const pointInfos = {
-      layer: myAirports
-    }
-
-    // Begin Editor constructor
-    const editor = new Editor({
-      view: view,
-      layerInfos: [pointInfos]
-    }); // End Editor constructor
-
-    // Add the widget to the view
-    view.ui.add(editor, "top-right");
 
       // Create a new GraphicsLayer
       const graphicsLayer = new GraphicsLayer();  
@@ -71,7 +47,7 @@
           Description: "A bronze sculpture of Stevie Ray Vaughan by Ralph Helmick"
         }
 
-      const point = { //Create a point  
+        const point = { //Create a point  
         type: "point",  
         longitude: -97.750689,    //long lat of Stevie Ray Vaughan Statue
         latitude: 30.263098
@@ -95,10 +71,10 @@
 
       });
 
-      graphicsLayer.add(pointGraphic); // Add the point graphic to the graphics layer
+      graphicsLayer.add(pointGraphic);
 
-      // Define a pop-up for usaeduLayer
-      const popupEduusa = {
+            // Define a pop-up for usaeduLayer
+            const popupEduusa = {
         "title": "EDUs",
         "content": "<b>Name:</b> {INSTNM}<br><b>Total Enrollment:</b> {INSTSIZE}<br><b>Chief Administrator:</b> {CHFNM}<br><b>General Telephone:</b> {GENTELE}<br><b>Website:</b> {WEBADDR}<br>"
       }
@@ -140,7 +116,7 @@
           expression: "$feature.Fac_Name"
         }
       };
-      // Define a new FeatureLayer for US Airports
+
       const airportLayer = new FeatureLayer({
          url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports3/FeatureServer",
         renderer: airportRenderer, //calling the icon
@@ -159,8 +135,6 @@
      }
     };
 
-    // Define a new FeatureLayer for US Heliports
-    // Define labels for the heliports
     const heliportLabels = {
       symbol: {
       type: "text",
@@ -180,7 +154,6 @@
     }
   };
 
-  // Define a new FeatureLayer for US Heliports
   const heliportLayer = new FeatureLayer({
   url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports3/FeatureServer",
   renderer: heliportRenderer, // Use the heliport renderer
@@ -192,8 +165,7 @@
   
   map.add(airportLayer);
 
-      // Define the coordinates of the polygon
-      const polygon = {
+  const polygon = {
         type: "polygon",
         rings: [
           [-97.76023671230826, 30.26578286193504],
@@ -203,7 +175,6 @@
         ]
       };
 
-      // Define a symbol for the polygon
       const simpleFillSymbol = {
         type: "simple-fill",
         color: [0, 0, 139, 1],  // Deep blue, fully opaque
@@ -213,7 +184,6 @@
         }
       };
 
-      // Define the popup template and attributes for the polygon
       const polygonPopupTemplate = {
         title: "{Name}",
         content: "{Description}"
@@ -224,12 +194,12 @@
         Description: "A professional theatre company located in Austin, Texas"
       };
 
-      // Create a Graphic object with the polygon geometry, symbol, attributes, and popup template
-      const polygonGraphic = new Graphic({
-        geometry: polygon,
-        symbol: simpleFillSymbol,
-        attributes: polygonAttributes,
-        popupTemplate: polygonPopupTemplate
+            // Create a Graphic object with the polygon geometry, symbol, attributes, and popup template
+        const polygonGraphic = new Graphic({
+          geometry: polygon,
+          symbol: simpleFillSymbol,
+          attributes: polygonAttributes,
+          popupTemplate: polygonPopupTemplate
       });
 
       // Add the graphic to the graphics layer
@@ -237,6 +207,31 @@
 
       // Add the graphic to the graphics layer
       graphicsLayer.add(polygonGraphic);
+
+      // Adding the const for the feature layer
+      const myAirports = new FeatureLayer({
+        url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/My_Airports_/FeatureServer",
+        outFields: ["AirportCode"],
+      });
+
+
+
+      // Adding the feature layer to the map
+      map.add(myAirports);
+
+      // Set the point layer's LayerInfo
+      const pointInfos = {
+        layer: myAirports
+      }
+
+      // Begin Editor constructor
+      const editor = new Editor({
+        view: view,
+        layerInfos: [pointInfos]
+      }); // End Editor constructor
+
+      // Add the widget to the view
+      view.ui.add(editor, "top-right");
 
     });
   </script>
