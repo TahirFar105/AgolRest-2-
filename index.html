@@ -208,10 +208,21 @@
       // Add the graphic to the graphics layer
       graphicsLayer.add(polygonGraphic);
 
+    const myairportRenderer = {
+      type: "simple",
+      symbol: {
+      type: "picture-marker",
+      url: "https://path-to-your-icon.com/icon.png", // Replace with the URL of your icon
+      width: "20px",
+      height: "20px"
+      }
+    }; 
+
       // Adding the const for the feature layer
       const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/My_Airports_/FeatureServer",
         outFields: ["AirportCode"],
+        renderer: myairportRenderer // Apply the renderer to the layer
       });
 
 
