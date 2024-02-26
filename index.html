@@ -19,8 +19,9 @@
       "esri/Graphic",  
       "esri/layers/GraphicsLayer",
       "esri/layers/FeatureLayer",
-      "esri/widgets/Editor" // Add this line
-    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) { // Add Editor here
+      "esri/widgets/Editor",
+      "esri/widgets/Legend" // Add this line
+    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor, Legend) { // Add Editor here
 
       esriConfig.apiKey = "AAPK1c87127d5a0145b2ac638d800774df300U2ATjjIzTdh-RZndDHdofO0OQ7kIq6PdxclVHH3ODEcby6JAS-PSh-PJsIKazL8";
       const map = new Map({
@@ -94,7 +95,8 @@
           "url": "airplane.png",
           "width": "18px",
           "height": "18px"
-        }
+        },
+        title: "Airports"
       };
 
       // Define the airport labels
@@ -118,10 +120,12 @@
       };
 
       const airportLayer = new FeatureLayer({
-         url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports3/FeatureServer",
+        url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports3/FeatureServer",
         renderer: airportRenderer, //calling the icon
         definitionExpression: "Fac_Type = 'AIRPORT'", //adding sql to filter for airports
-        labelingInfo: [airportLabels] // Apply the labels
+        labelingInfo: [airportLabels],
+        legendEnabled: true,
+        title: "Airports"
       });
 
       // Define a renderer for the heliports
@@ -132,7 +136,8 @@
       "url": "heliport.png", // Use the URL of your heliport icon
       "width": "18px",
       "height": "18px"
-     }
+     },
+     title: "Heliports" 
     };
 
     const heliportLabels = {
@@ -158,7 +163,9 @@
   url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports3/FeatureServer",
   renderer: heliportRenderer, // Use the heliport renderer
   definitionExpression: "Fac_Type = 'HELIPORT'", // Filter for heliports
-  labelingInfo: [heliportLabels] // Apply the heliport labels
+  labelingInfo: [heliportLabels],
+  legendEnabled: true,
+  title: "Heliports" // Apply the heliport labels
   });
 
   map.add(heliportLayer);
@@ -215,7 +222,8 @@
       url: "Eo_circle_green_checkmark.png", // Replace with the URL of your icon
       width: "20px",
       height: "20px"
-      }
+      },
+      title: "My Destination"
     }; 
 
     const myAirportsLabelClass = {
@@ -235,12 +243,15 @@
     }
 };
 
-      // Adding the const for the feature layer
+
+// Adding the const for the feature layer
       const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/My_Airports_/FeatureServer",
         outFields: ["AirportCode"],
         renderer: myairportRenderer,
-        labelingInfo: [myAirportsLabelClass] // Apply the renderer to the layer
+        labelingInfo: [myAirportsLabelClass],
+        legendEnabled: true,
+         title: "My Destination"  // Apply the renderer to the layer
       });
 
 
@@ -261,6 +272,13 @@
 
       // Add the widget to the view
       view.ui.add(editor, "top-right");
+
+      let legend = new Legend({
+        view: view
+      });
+
+      // Add the legend to the view
+      view.ui.add(legend, "bottom-right");
 
     });
   </script>
